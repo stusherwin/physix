@@ -5,13 +5,20 @@ module Graphics (
 ) where
 
 import Graphics.UI.GLUT
-import Physics
+import Types as T
 
 class Drawable a where
-  draw :: a -> IO()
+  draw :: (Double,Double) -> Double -> a -> IO()
   
-instance Drawable Particle where
-  draw Particle { pos = Vec x y, rad = r } = circle 10 (realToFrac r) (Color3 1 0 0) (realToFrac x, realToFrac y)
+instance Drawable Body where
+  draw (origx,origy) scaleFactor Body { pos = Vec x y, rad = r, col = c } = 
+    let radius   = realToFrac (max 0.005 (r * scaleFactor))
+        position = (realToFrac (origx + x * scaleFactor), realToFrac (origy + y * scaleFactor))
+        colour T.Red    = Color3 1 0 0
+        colour T.Yellow = Color3 1 1 0
+        colour T.Blue   = Color3 0 0 1
+        colour T.White  = Color3 1 1 1
+    in circle 10 radius (colour c) position
 
 circle :: GLdouble -> GLdouble -> Color3 GLfloat -> (GLdouble, GLdouble) -> IO ()
 circle res r = do
@@ -20,7 +27,7 @@ circle res r = do
 polygon :: [(GLdouble, GLdouble)] -> Color3 GLfloat -> (GLdouble, GLdouble) -> IO ()
 polygon vs col (xo,yo) = do
   preservingMatrix $ do
-    translate $ Vector3 (xo/100.0) (yo/100.0) 0
+    translate $ Vector3 xo yo 0
     color col
     renderPrimitive Polygon $ do
-      mapM_ (\(x,y) -> vertex $ Vertex3 (x/100.0) (y/100.0) 0) vs
+      mapM_ (\(x,y) -> vertex $ Vertex3 x y 0) vs
