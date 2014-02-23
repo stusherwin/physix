@@ -21,6 +21,7 @@ class Vector a where
   unit :: a -> a
   absSquare :: a -> Double
   vecSum :: [a] -> a
+  fromVector :: a -> (Double, Double)
 
 data Vec = Vec Double Double deriving (Eq, Show)
 
@@ -34,3 +35,4 @@ instance Vector Vec where
     in Vec (x/norm) (y/norm)
   absSquare (Vec x y) = x^2 + y^2
   vecSum = foldl (|+|) (Vec 0 0)
+  fromVector (Vec x y) = (x, y)
