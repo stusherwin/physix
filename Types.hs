@@ -1,6 +1,5 @@
 module Types (
   Colour (..),
-  Universe (..),
   Body (..),
   Vector (..),
   Vec (..)
@@ -9,7 +8,6 @@ module Types (
 data Colour = Red | Blue | Yellow | White
   deriving (Eq, Show)
 
-type Universe = [Body]
 data Body = Body { col :: Colour, pos :: Vec, vel :: Vec, acc :: Vec, rad :: Double, mass :: Double } 
   deriving (Eq, Show)
 

@@ -1,9 +1,4 @@
 module Physics (
-  Universe,
-  Body (..),
-  Vector (..),
-  Vec (..),
-  Colour (..),
   simulate
 ) where
 
